@@ -4,16 +4,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 @Entity
-public class Users {
+public class User {
   @Id
   private String userEmail;
 
   private String hashPwd;
 
-  public Users() {
+  public User() {
   }
 
-  public Users(String userEmail, String hashPwd) {
+  public User(String userEmail, String hashPwd) {
     this.userEmail = userEmail;
     this.hashPwd = hashPwd;
   }

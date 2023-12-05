@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project_1.model.Users;
+import com.project_1.model.User;
 import com.project_1.repository.UserRepo;
 import com.project_1.resources.UserReq;
 
@@ -25,12 +25,12 @@ public class UserController {
   @PutMapping("/register")
   public ResponseEntity<?> addUser(@RequestBody UserReq request) {
 
-    Optional<Users> repeatedUser = userRepo.findByUserEmail(request.getUserEmail());
+    Optional<User> repeatedUser = userRepo.findByUserEmail(request.getUserEmail());
     if (repeatedUser.isPresent()) {
       return ResponseEntity.status(409).body("Email already taken");
     }
 
-    Users newUser = new Users();
+    User newUser = new User();
     newUser.setUserEmail(request.getUserEmail());
 
     String salt = BCrypt.gensalt(12);
