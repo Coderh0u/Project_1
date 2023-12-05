@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,9 +17,10 @@ public class Form {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID form_id;
 
+  @Column(unique = true)
   private String title;
 
-  @OneToMany(mappedBy= "form", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
   private List<Question> questions;
 
   public Form() {
@@ -52,8 +54,6 @@ public class Form {
 
   public void setQuestions(List<Question> questions) {
     this.questions = questions;
-  } 
- 
-
+  }
 
 }
