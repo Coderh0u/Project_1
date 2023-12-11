@@ -22,7 +22,8 @@ public class UserController {
     this.userRepo = userRepo;
   }
 
-  @PutMapping("/user/register") 
+  // add new user
+  @PutMapping("/user/register")
   public ResponseEntity<?> addUser(@RequestBody UserReq request) {
 
     Optional<User> repeatedUser = userRepo.findByUserEmail(request.getUserEmail());
@@ -40,6 +41,7 @@ public class UserController {
     return ResponseEntity.status(200).body(this.userRepo.save(newUser));
   }
 
+  // testing purposes
   @GetMapping("/user/all")
   public ResponseEntity<?> getUsers() {
     return ResponseEntity.ok(this.userRepo.findAll());

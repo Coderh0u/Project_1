@@ -2,8 +2,10 @@ package com.project_1.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "app_user")
 public class User {
   @Id
   private String userEmail;
