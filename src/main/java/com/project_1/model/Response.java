@@ -1,5 +1,7 @@
 package com.project_1.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,7 @@ public class Response {
 
   private String response;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "question_id")
   private Question question;

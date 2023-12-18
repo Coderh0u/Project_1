@@ -3,6 +3,8 @@ package com.project_1.model;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +22,8 @@ public class Form {
   @Column(unique = true)
   private String title;
 
-  @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
+  @JsonManagedReference
+  @OneToMany(mappedBy = "form", orphanRemoval = true)
   private List<Question> questions;
 
   public Form() {
@@ -56,4 +59,8 @@ public class Form {
     this.questions = questions;
   }
 
+  public void removeQuestion(Question question) {
+    this.questions.remove(question);
+    question.setForm(null);
+  }
 }

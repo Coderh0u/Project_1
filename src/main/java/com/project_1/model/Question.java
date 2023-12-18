@@ -1,6 +1,9 @@
 package com.project_1.model;
 
 import java.util.List;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -15,12 +18,13 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Question {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long question_id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private UUID question_id;
 
   @Column(unique = true)
   private String question;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "form_id")
   private Form form;
