@@ -119,7 +119,8 @@ public class FormController {
             updatedForm.getQuestions().add(newQuestion);
           }
         }
-
+        formRepo.save(updatedForm);
+        
         return ResponseEntity.status(200).body(updatedForm);
       } else {
         return ResponseEntity.status(404).body("Cant find");
