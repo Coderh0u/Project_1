@@ -1,6 +1,5 @@
 package com.project_1.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,7 +19,6 @@ public class Form {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID form_id;
 
-  @Column(unique = true)
   private String title;
 
   @JsonManagedReference

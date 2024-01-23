@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,7 +21,7 @@ public class Question {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID question_id;
 
-  @Column(unique = true)
+  @Column(unique = false)
   private String question;
 
   @JsonBackReference

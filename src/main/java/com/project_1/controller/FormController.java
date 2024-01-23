@@ -29,12 +29,12 @@ import org.springframework.web.bind.annotation.PatchMapping;
 @RestController
 public class FormController {
   private final FormRepo formRepo;
-  private final QuestionRepo questionRepo;
+  // private final QuestionRepo questionRepo;
   // private final ResponseRepo responseRepo;
 
   public FormController(FormRepo formRepo, QuestionRepo questionRepo, ResponseRepo responseRepo) {
     this.formRepo = formRepo;
-    this.questionRepo = questionRepo;
+    // this.questionRepo = questionRepo;
     // this.responseRepo = responseRepo;
   }
 
@@ -120,7 +120,7 @@ public class FormController {
           }
         }
         formRepo.save(updatedForm);
-        
+
         return ResponseEntity.status(200).body(updatedForm);
       } else {
         return ResponseEntity.status(404).body("Cant find");
@@ -134,6 +134,9 @@ public class FormController {
   @GetMapping("/form/all")
   public ResponseEntity<?> getAllForm() {
     List<Form> allForm = formRepo.findAll();
+    if (allForm.size() == 0) {
+      return ResponseEntity.status(200).body("empty database");
+    }
     return ResponseEntity.status(200).body(allForm);
   }
 
