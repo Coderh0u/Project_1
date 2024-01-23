@@ -1,5 +1,6 @@
 package com.project_1.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class Form {
   private String title;
 
   @JsonManagedReference
-  @OneToMany(mappedBy = "form", orphanRemoval = true)
+  @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Question> questions;
 
   public Form() {
@@ -62,5 +63,12 @@ public class Form {
   public void removeQuestion(Question question) {
     this.questions.remove(question);
     question.setForm(null);
+  }
+
+  public void addQuestion(Question question) {
+    if (!this.questions.contains(question)) {
+      this.questions.add(question);
+    }
+    question.setForm(this);
   }
 }

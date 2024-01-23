@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project_1.model.Form;
 import com.project_1.model.Question;
-import com.project_1.model.Response;
+// import com.project_1.model.Response;
 import com.project_1.repository.FormRepo;
 import com.project_1.repository.QuestionRepo;
 import com.project_1.repository.ResponseRepo;
@@ -30,29 +30,31 @@ import org.springframework.web.bind.annotation.PatchMapping;
 public class FormController {
   private final FormRepo formRepo;
   private final QuestionRepo questionRepo;
-  private final ResponseRepo responseRepo;
+  // private final ResponseRepo responseRepo;
 
   public FormController(FormRepo formRepo, QuestionRepo questionRepo, ResponseRepo responseRepo) {
     this.formRepo = formRepo;
     this.questionRepo = questionRepo;
-    this.responseRepo = responseRepo;
+    // this.responseRepo = responseRepo;
   }
 
   // create new
   @PutMapping("/form/new")
   public ResponseEntity<?> newForm(@RequestBody FormReq request) {
     try {
+      // set title
       Form newForm = new Form();
       newForm.setTitle(request.getTitle());
 
-      List<Question> questions = new ArrayList<>();
+      // set questions
+      List<Question> questionsArr = new ArrayList<>();
       for (String questionString : request.getQuestions()) {
         Question question = new Question();
         question.setQuestion(questionString);
         question.setForm(newForm);
-        questions.add(question);
+        questionsArr.add(question);
       }
-      newForm.setQuestions(questions);
+      newForm.setQuestions(questionsArr);
 
       return ResponseEntity.status(200).body(this.formRepo.save(newForm));
     } catch (Exception e) {
@@ -101,48 +103,26 @@ public class FormController {
       Optional<Form> findForm = formRepo.findById(request.getForm_id());
       if (findForm.isPresent()) {
         Form updatedForm = findForm.get();
+
+        // change title
         updatedForm.setTitle(request.getTitle());
 
-        System.out.println(1);
+        // existing question removed in request
+        updatedForm.getQuestions().removeIf(q -> !request.getQuestions().contains(q.getQuestion()));
 
-        for (Question question : new ArrayList<>(updatedForm.getQuestions())) {
-          if (!request.getQuestions().contains(question.getQuestion())) {
-            updatedForm.removeQuestion(question);
-            questionRepo.delete(question);
+        // add to form new question in request
+        for (String questString : request.getQuestions()) {
+          if (updatedForm.getQuestions().stream().noneMatch(q -> q.getQuestion().equals(questString))) {
+            Question newQuestion = new Question();
+            newQuestion.setQuestion(questString);
+            newQuestion.setForm(updatedForm);
+            updatedForm.getQuestions().add(newQuestion);
           }
         }
 
-        System.out.println(2);
-
-        formRepo.saveAndFlush(updatedForm);
-
-        System.out.println(3);
-
-        List<Question> newQuestions = new ArrayList<>();
-
-        System.out.println(4);
-
-        for (String questionString : request.getQuestions()) {
-          Question question = new Question();
-          question.setQuestion(questionString);
-          question.setForm(updatedForm);
-          newQuestions.add(question);
-        }
-
-        System.out.println(5);
-
-        updatedForm.setQuestions(newQuestions);
-
-        System.out.println(6);
-
-        formRepo.save(updatedForm);
-
-        System.out.println(7);
-
         return ResponseEntity.status(200).body(updatedForm);
       } else {
-        return ResponseEntity.status(404).body("Cannot find form");
-
+        return ResponseEntity.status(404).body("Cant find");
       }
     } catch (Exception e) {
       return ResponseEntity.status(500).body("updating failed: " + e.getMessage());
