@@ -19,6 +19,7 @@ public class Form {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID form_id;
 
+  @Column(unique = false)
   private String title;
 
   @JsonManagedReference
